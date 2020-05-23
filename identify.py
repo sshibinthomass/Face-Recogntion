@@ -89,10 +89,11 @@ while True:
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord("q"):
+        if status == 1:
+            times.append(datetime.now())
         break
 
 # Release handle to the webcam
-
 print(status_list)
 print(times)
 
