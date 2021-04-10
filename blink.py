@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-
-
-# This is a demo of detecting eye status from the users camera. If the users eyes are closed for EYES_CLOSED seconds, the system will start printing out "EYES CLOSED"
-# to the terminal until the user presses and holds the spacebar to acknowledge
-
-# this demo must be run with sudo privileges for the keyboard module to work
-
-# PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
-# OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
-# specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
-
 # imports
 import face_recognition
 import cv2
