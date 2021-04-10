@@ -11,37 +11,19 @@ import winsound
 from csv import reader
 import time
 
-path = 'E:/Projects/Python/Face-Recogntion/photos'
+path = 'E:/Projects/Python/Face-Recogntion/photos'       #Path of photo is mentioned here by Reg_No and Name
 images = []
 classNames = []
 allList = []
 regNo = []
 myList = os.listdir(path)
-for name in myList:
-    curImg = cv2.imread(f'{path}/{name}')
-    images.append(curImg)
-    all = name
-    name = name.split('_')
-    reg = name[0]
-    name = name[1]
-    regNo.append(os.path.splitext(reg)[0])
-    classNames.append(os.path.splitext(name)[0])
-    allList.append(os.path.splitext(all)[0])
 
 
-def findEncodings(images):
-    encodeList = []
-    for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        encode = face_recognition.face_encodings(img)[0]
-        encodeList.append(encode)
-    return encodeList
-
-
+#Find most frequent name
 def most_frequent(List):
     return max(set(List), key=List.count)
 
-
+#Write to CSV file
 def markAttendance(std_name):
     with open('attendance.csv', 'r+') as f:
         myDataList = f.readlines()
@@ -54,26 +36,44 @@ def markAttendance(std_name):
             dtString = now.strftime('%H:%M:%S')
             f.writelines(f'\n{std_name},{dtString}')
 
-
+#Check the Name by 'Y'- yes and 'N'- No
 def check(name_list):
     if len(name_list) % 100 == 0 and most_frequent(name_list) != "Unknown":
-        std_name = most_frequent(name_list)
+        std_name = most_frequent(name_list)                                     #Most frequent in 100 values
         print("Detected as:", std_name)
         while True:
             check = input("Please say Y or N or Q")
             check = check.upper()
-            if check == "Y":
+            if check == "Y":                                                    #When Y is given as input
                 markAttendance(std_name)
                 print("Thank You Next Person please")
                 name_list.clear()
                 break
-            elif check == "N":
+            elif check == "N":                                                  #When N is given as input
                 print("Please try again")
                 name_list.clear()
                 break
-            if check == "yes" or check == "no" or check == "quit":
-                break
 
+#Format the name to Name and RegNo
+for name in myList:
+    curImg = cv2.imread(f'{path}/{name}')
+    images.append(curImg)
+    all = name
+    name = name.split('_')
+    reg = name[0]
+    name = name[1]
+    regNo.append(os.path.splitext(reg)[0])
+    classNames.append(os.path.splitext(name)[0])
+    allList.append(os.path.splitext(all)[0])
+
+#Face Encoding using cv2 and FaceRecogniting library
+def findEncodings(images):
+    encodeList = []
+    for img in images:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        encode = face_recognition.face_encodings(img)[0]
+        encodeList.append(encode)
+    return encodeList
 
 encodeListKnown = findEncodings(images)
 print("Completed Encoding")
