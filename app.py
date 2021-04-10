@@ -84,7 +84,7 @@ known_face_encodings = encodeListKnown
 known_face_names = classNames
 print(known_face_names)
 
-#FaceRecognition Function
+#FaceRecognition Function call
 def face_rec():
     # Initialize some variables
     video_capture = cv2.VideoCapture(0)
