@@ -1,3 +1,4 @@
+#Import required library
 import numpy as np
 import face_recognition
 import os
@@ -12,6 +13,7 @@ from csv import reader
 import time
 
 path = 'E:/Projects/Python/Face-Recogntion/photos'       #Path of photo is mentioned here by Reg_No and Name
+#initilization
 images = []
 classNames = []
 allList = []
@@ -19,11 +21,11 @@ regNo = []
 myList = os.listdir(path)
 
 
-#Find most frequent name
+#Find most frequent name from list of names
 def most_frequent(List):
     return max(set(List), key=List.count)
 
-#Write to CSV file
+#Write to CSV file(Name and Time)
 def markAttendance(std_name):
     with open('attendance.csv', 'r+') as f:
         myDataList = f.readlines()
@@ -39,17 +41,17 @@ def markAttendance(std_name):
 #Check the Name by 'Y'- yes and 'N'- No
 def check(name_list):
     if len(name_list) % 100 == 0 and most_frequent(name_list) != "Unknown":
-        std_name = most_frequent(name_list)                                     #Most frequent in 100 values
-        print("Detected as:", std_name)
+        std_name = most_frequent(name_list)                                         #Most frequent in 100 values
+        print("Detected as: ", std_name)                                            #Print student name
         while True:
-            check = input("Please say Y or N or Q")
-            check = check.upper()
-            if check == "Y":                                                    #When Y is given as input
+            check = input("Please say Y or N: ")                                    #Get 'Y' or 'N' as input
+            check = check.upper()                                                   #Upper of y and N
+            if check == "Y":                                                        #When Y is given as input
                 markAttendance(std_name)
                 print("Thank You Next Person please")
                 name_list.clear()
                 break
-            elif check == "N":                                                  #When N is given as input
+            elif check == "N":                                                      #When N is given as input
                 print("Please try again")
                 name_list.clear()
                 break
@@ -66,7 +68,7 @@ for name in myList:
     classNames.append(os.path.splitext(name)[0])
     allList.append(os.path.splitext(all)[0])
 
-#Face Encoding using cv2 and FaceRecogniting library
+#Face Encoding using cv2 and FaceRecognition
 def findEncodings(images):
     encodeList = []
     for img in images:
@@ -82,7 +84,7 @@ known_face_encodings = encodeListKnown
 known_face_names = classNames
 print(known_face_names)
 
-
+#FaceRecognition Function
 def face_rec():
     # Initialize some variables
     video_capture = cv2.VideoCapture(0)
@@ -104,7 +106,6 @@ def face_rec():
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
-        status = 0
         # Only process every other frame of video to save time
         if process_this_frame:
             # Find all the faces and face encodings in the current frame of video
@@ -166,5 +167,5 @@ def face_rec():
     video_capture.release()
     cv2.destroyAllWindows()
 
-
-face_rec()
+if __name__ == "__main__":
+    face_rec()
